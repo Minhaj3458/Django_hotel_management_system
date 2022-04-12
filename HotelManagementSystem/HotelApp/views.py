@@ -7,6 +7,11 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserModel
+from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 
 
 
@@ -51,7 +56,11 @@ def Authenticate_Forgetpas(request):
 
     return render(request, 'admin/Authenticate_Forgetpas.html')
 def Home(request):
-    return render(request,'Home.html')
+    Home_About = models.About_us.objects.all().order_by('-Id')[:1]
+    Context={
+        'About': Home_About
+    }
+    return render(request,'Home.html',Context)
 def all(request):
     return render(request,'allinclude.html')
 def OnlineBooking(request):
@@ -95,7 +104,9 @@ def Employee_login(request):
         if User_email == data[0][0] and User_password == data[0][1] and Employee_Id == data[0][2]:
             data = models.Add_Employee.objects.get(Employee_Id=Employee_Id)
             return render(request, 'admin/EmployeeShow.html', {'data': data})
-
+            messages.add_message(request, messages.SUCCESS, 'Login Successfully')
+        else:
+            messages.add_message(request, messages.ERROR, 'Employee Id & Email & Password not Macthing')
     return render(request,'Employee_login_page.html')
 def Employee_Reg(request):
     if request.method == 'POST':
@@ -113,8 +124,20 @@ def Employee_Reg(request):
         Data.Time = request.POST.get('Time')
         Mydata = models.Add_Employee.objects.get(Employee_Id=Data.Employee_Id)
         if Data.Password == Data.Con_password and Mydata:
-            Data.save()
+            user = Data.save()
+            current_site = get_current_site(request)
+            mail_subject ='An Account Created'
+            messege = render_to_string('emailsend.html',{
+                'user': user,
+                'domain': current_site.domain
+            })
+            send_mail = request.POST.get('Email')
+            email = EmailMessage(mail_subject, messege, to=[send_mail])
+            email.send()
             return redirect('Employee_login')
+        elif Data.Password != Data.Con_password:
+            messages.add_message(request, messages.SUCCESS, 'Login Successfully')
+
         else:
             return HttpResponse('Fail')
     return render(request,'Employee_Register_Page.html')
@@ -541,3 +564,7 @@ def AddEmployeeSalary(request):
 def EmployeeShow(request):
 
     return render(request, 'admin/EmployeeShow.html')
+
+def EmailSend(request):
+
+    return render(request, 'emailsend.html')

@@ -35,5 +35,6 @@ urlpatterns = [
     path('EmployeeShow', views.EmployeeShow, name='EmployeeShow'),
     path('Authenticate_reg', views.Authenticate_reg, name='Authenticate_reg'),
     path('Authenticate_login', views.Authenticate_login, name='Authenticate_login'),
-    path('Authenticate_Forgetpas', views.Authenticate_Forgetpas, name='Authenticate_Forgetpas')
+    path('Authenticate_Forgetpas', views.Authenticate_Forgetpas, name='Authenticate_Forgetpas'),
+    path('EmailSend', views.EmailSend, name='EmailSend')
 ]

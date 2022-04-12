@@ -117,3 +117,11 @@ class Add_Salarys(models.Model):
         return self.Employee_Id
     class Meta:
         db_table = 'Add_Employee_salarys'
+
+class About_us(models.Model):
+   Id = models.AutoField(primary_key=True)
+   Title = models.CharField(max_length=255)
+   Text = models.CharField(max_length=1000)
+   About_pic = models.ImageField(upload_to='')
+   def __str__(self):
+       return self.Title

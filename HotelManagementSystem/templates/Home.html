@@ -127,16 +127,17 @@
      <!--================About Part=================-->
      <section id="about">
         <div class="container">
+             {% for i in About %}
            <div class="row">
               <div class="col-lg-8">
                  <div class="about_video">
-                    <img src="{%static 'Allfiles/Photo/video_pic.jpg'%}" alt="img">
+                    <img src="{{i.About_pic.url}}" alt="img">
                      <a data-video-id="q0wR-QcVH0U" class="video_btn" ><i class="far fa-play-circle"></i></a>
                  </div>
               </div>
                <div class="col-lg-4">
                  <div class="About_info">
-                   <h2 class="about-title">About Us</h2>
+                   <h2 class="about-title">{{i.Title}}</h2>
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utjij enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi utjjij aliquip ex ea commodo consequat.</p>
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
                       <p>Fipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor</p>
@@ -146,6 +147,7 @@
                  </div>
               </div>
            </div>
+            {%endfor%}
         </div>
      </section>
 
